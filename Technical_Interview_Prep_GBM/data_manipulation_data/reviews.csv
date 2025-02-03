@@ -1,0 +1,7 @@
+review_id,user_id,review_text,rating,review_date
+1,101,"Great product, loved it!",5,2025-02-01
+1,101,"Great product, loved it!",5,2025-02-01
+2,102,"Terrible, would not buy.",1,2025-02-02
+3,101,"Great product, loved it!",5,2025-02-01
+4,103,"Okay, it works fine.",3,2025-02-03
+5,104,,,2025-02-01
