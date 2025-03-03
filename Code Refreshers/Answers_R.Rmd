@@ -1,0 +1,136 @@
+---
+title: "R Refresher Activity Answers"
+output: html_notebook
+---
+
+Load the mtcars dataset
+
+```{r}
+data(mtcars)
+head(mtcars)
+```
+
+Problem 1: Descriptive Statistics
+
+```{r}
+# Summary statistics for mpg
+mean_mpg <- mean(mtcars$mpg)
+median_mpg <- median(mtcars$mpg)
+range_mpg <- range(mtcars$mpg)
+sd_mpg <- sd(mtcars$mpg)
+
+# Print the results
+cat("Mean of mpg:", mean_mpg, "\n")
+cat("Median of mpg:", median_mpg, "\n")
+cat("Range of mpg:", range_mpg, "\n")
+cat("Standard Deviation of mpg:", sd_mpg, "\n")
+```
+
+
+Problem 2: Data Visualization
+
+```{r}
+# Histogram of mpg
+hist(mtcars$mpg, main="Histogram of MPG", xlab="Miles per Gallon", col="lightblue", border="black")
+
+# Scatter plot of mpg vs hp
+plot(mtcars$hp, mtcars$mpg, main="MPG vs Horsepower", xlab="Horsepower", ylab="Miles per Gallon", pch=19, col="blue")
+abline(lm(mtcars$mpg ~ mtcars$hp), col="red")
+```
+
+Problem 3: Correlation
+
+```{r}
+# Correlation between mpg and hp
+cor_mpg_hp <- cor(mtcars$mpg, mtcars$hp)
+cat("Correlation between mpg and hp:", cor_mpg_hp, "\n")
+```
+
+Problem 4: Linear Regression
+
+```{r}
+# Fit a linear model: mpg ~ hp
+model <- lm(mpg ~ hp, data=mtcars)
+summary(model)
+
+# Plot the regression line
+plot(mtcars$hp, mtcars$mpg, main="MPG vs Horsepower with Regression Line", xlab="Horsepower", ylab="Miles per Gallon", pch=19, col="blue")
+abline(model, col="red")
+```
+
+Problem 5: Grouping and Aggregation
+
+```{r}
+# Group by number of cylinders and calculate average mpg
+agg_mpg <- aggregate(mpg ~ cyl, data=mtcars, FUN=mean)
+cat("Average MPG by Cylinder Count:\n")
+print(agg_mpg)
+```
+
+Problem 6: Outliers Detection
+
+```{r}
+# Boxplots to identify outliers for multiple variables
+par(mfrow=c(2, 2))
+boxplot(mtcars$mpg, main="Boxplot for MPG", ylab="Miles per Gallon", col="lightblue")
+boxplot(mtcars$hp, main="Boxplot for Horsepower", ylab="Horsepower", col="lightgreen")
+boxplot(mtcars$wt, main="Boxplot for Weight", ylab="Weight (1000 lbs)", col="lightcoral")
+boxplot(mtcars$qsec, main="Boxplot for 1/4 Mile Time", ylab="1/4 Mile Time", col="lightyellow")
+
+# Identify outliers for each variable using the boxplot.stats() function
+mpg_outliers <- boxplot.stats(mtcars$mpg)$out
+hp_outliers <- boxplot.stats(mtcars$hp)$out
+wt_outliers <- boxplot.stats(mtcars$wt)$out
+qsec_outliers <- boxplot.stats(mtcars$qsec)$out
+
+# Print the outliers
+cat("Outliers for MPG:", mpg_outliers, "\n")
+cat("Outliers for Horsepower:", hp_outliers, "\n")
+cat("Outliers for Weight:", wt_outliers, "\n")
+cat("Outliers for 1/4 Mile Time:", qsec_outliers, "\n")
+```
+
+Bonus 1: Visualizing Relationships Between Multiple Variables
+
+```{r}
+# Pair plot (scatterplot matrix) for mpg, hp, wt, qsec
+pairs(mtcars[, c("mpg", "hp", "wt", "qsec")], main="Pair Plot of mpg, hp, wt, and qsec")
+```
+
+Bonus 2: Distribution Analysis
+
+```{r}
+# Density plots for mpg, hp, and wt
+par(mfrow=c(1,3))  # Set up the plotting area to show 3 plots
+plot(density(mtcars$mpg), main="Density Plot of MPG", xlab="Miles per Gallon")
+plot(density(mtcars$hp), main="Density Plot of Horsepower", xlab="Horsepower")
+plot(density(mtcars$wt), main="Density Plot of Weight", xlab="Weight")
+```
+
+Bonus 3: Identifying Multicollinearity
+
+```{r}
+# Correlation matrix
+cor_matrix <- cor(mtcars[, sapply(mtcars, is.numeric)])
+print(cor_matrix)
+```
+
+Bonus 4: Creating a Heatmap of Correlations
+
+```{r}
+library(ggplot2)
+library(reshape2)
+cor_matrix_melted <- melt(cor_matrix)
+ggplot(cor_matrix_melted, aes(Var1, Var2, fill=value)) +
+  geom_tile() + 
+  scale_fill_gradient2(midpoint=0, low="blue", high="red", mid="white") + 
+  theme_minimal() + 
+  ggtitle("Heatmap of Correlation Matrix")
+```
+
+Bonus 5: Identifying Trends by Cylinder Group
+
+```{r}
+# Boxplot to compare mpg by cyl
+boxplot(mpg ~ cyl, data=mtcars, main="MPG by Number of Cylinders", xlab="Number of Cylinders", ylab="Miles per Gallon", col="lightgreen")
+```
